@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AromaDom": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5084",
+      "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "Production" }
+    }
+  }
+}

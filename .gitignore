@@ -1,0 +1,6 @@
+**/bin/
+**/obj/
+.vs/
+Run/
+*.db-wal
+*.db-shm

@@ -1,0 +1,54 @@
+@page
+@model AromaDom.Pages.IndexModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Материалы";
+    var russianCulture = CultureInfo.GetCultureInfo("ru-RU");
+}
+<div class="page-heading">
+    <div>
+        <h1>Материалы</h1>
+        <p class="muted">Учёт сырья для производства ароматических свечей</p>
+    </div>
+    <div class="form-actions"><a class="button" asp-page="Production">Расчёт выпуска</a><a class="button" asp-page="Material">Добавить материал</a></div>
+</div>
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="notice notice-success" role="status">
+        <strong><span aria-hidden="true">✓</span> Готово</strong>
+        <p>@successMessage</p>
+    </div>
+}
+@if (Model.LoadError is not null)
+{
+    <div class="load-error" role="alert">
+        <h2><span aria-hidden="true">⛔</span> Ошибка загрузки</h2>
+        <p>@Model.LoadError</p>
+        <a class="button" asp-page="Index">Повторить загрузку</a>
+    </div>
+}
+else if (Model.Materials.Count == 0)
+{
+    <p class="empty-state">Материалов пока нет. Добавьте первый материал.</p>
+}
+else
+{
+    <p class="muted">Материалов: @Model.Materials.Count. Требуемое количество — суммарный расход на одно изделие каждого связанного вида продукции.</p>
+    @foreach (var material in Model.Materials)
+    {
+        <article class="card" data-material-id="@material.Id">
+            <div class="material-details">
+                <h2><a asp-page="Material" asp-route-id="@material.Id">@material.TypeName | @material.Name</a></h2>
+                <p>Минимальное количество: @material.Minimum.ToString("0.######", russianCulture) @material.UnitName</p>
+                <p>Количество на складе: @material.Stock.ToString("0.######", russianCulture) @material.UnitName</p>
+                <p>Цена: @material.Price.ToString("F2", russianCulture) ₽ / Единица измерения: @material.UnitName</p>
+                <a class="button" asp-page="Products" asp-route-id="@material.Id">Продукция</a>
+            </div>
+            <div class="requirement">
+                <span>Требуемое количество</span>
+                <strong>@material.RequiredQuantity.ToString("F2", russianCulture) @material.UnitName</strong>
+            </div>
+        </article>
+    }
+}
+

@@ -1,0 +1,10 @@
+@page
+@{
+    var missing = Response.StatusCode == 404;
+    ViewData["Title"] = missing ? "Страница не найдена" : "Запрос не выполнен";
+}
+<div class="notice notice-warning" role="alert">
+    <h1><span aria-hidden="true">⚠</span> @ViewData["Title"]</h1>
+    <p>@(missing ? "Материал или страница недоступны. Выберите материал из актуального списка." : "Вернитесь к списку материалов и повторите действие.")</p>
+    <a class="button" asp-page="Index">Назад к материалам</a>
+</div>

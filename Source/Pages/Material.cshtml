@@ -1,0 +1,54 @@
+@page
+@model AromaDom.Pages.MaterialModel
+@{
+    ViewData["Title"] = Model.Data.Id == 0 ? "Добавление материала" : "Редактирование материала";
+}
+<nav aria-label="Навигация"><a asp-page="Index">← Назад к материалам</a></nav>
+<h1>@ViewData["Title"]</h1>
+<p class="muted">Все поля обязательны. Укажите цену в рублях с точностью до копеек.</p>
+<form method="post">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="notice notice-error" role="alert">
+            <strong><span aria-hidden="true">⛔</span> Не удалось сохранить материал</strong>
+            <p>Исправьте указанные поля и нажмите «Сохранить» ещё раз.</p>
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+    <input type="hidden" asp-for="Data.Id"/>
+    <label asp-for="Data.Name">Наименование</label>
+    <input asp-for="Data.Name" maxlength="200" required/>
+    <span asp-validation-for="Data.Name"></span>
+    <label asp-for="Data.MaterialTypeId">Тип материала</label>
+    <select asp-for="Data.MaterialTypeId" required><option value="">Выберите тип</option>
+@foreach (var type in Model.Types)
+{
+    <option value="@type["Id"]">@type["Name"]</option>
+}
+</select>
+    <span asp-validation-for="Data.MaterialTypeId"></span>
+    <label asp-for="Data.UnitId">Единица измерения</label>
+    <select asp-for="Data.UnitId" required><option value="">Выберите единицу</option>
+@foreach (var unit in Model.Units)
+{
+    <option value="@unit["Id"]">@unit["Name"]</option>
+}
+</select>
+    <span asp-validation-for="Data.UnitId"></span>
+    <label asp-for="Data.Price">Цена единицы, ₽</label>
+    <input asp-for="Data.Price" type="number" min="0" max="1000000000" step="0.01" required/>
+    <span asp-validation-for="Data.Price"></span>
+    <label asp-for="Data.Stock">Количество на складе</label>
+    <input asp-for="Data.Stock" type="number" min="0" max="1000000000" step="any" required/>
+    <span asp-validation-for="Data.Stock"></span>
+    <label asp-for="Data.Minimum">Минимальное количество</label>
+    <input asp-for="Data.Minimum" type="number" min="0" max="1000000000" step="any" required/>
+    <span asp-validation-for="Data.Minimum"></span>
+    <label asp-for="Data.PackageQuantity">Количество в упаковке</label>
+    <input asp-for="Data.PackageQuantity" type="number" min="0.000001" max="1000000000" step="any" required/>
+    <span asp-validation-for="Data.PackageQuantity"></span>
+    <div class="form-actions">
+        <button type="submit">Сохранить</button>
+        <a asp-page="Index">Отмена</a>
+    </div>
+</form>

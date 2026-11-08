@@ -1,0 +1,6 @@
+@page
+@model AromaDom.Pages.ProductsModel
+@{ViewData["Title"]="Продукция по материалу";}
+<h1>Продукция по материалу</h1><p>@Model.Material["Name"]</p><a asp-page="Index">← Назад к материалам</a>
+@if(Model.Products.Count==0){<p>Материал пока не используется в рецептурах.</p>}else{
+<table><thead><tr><th>Артикул</th><th>Продукция</th><th>На одно изделие, @Model.Material["UnitName"]</th></tr></thead><tbody>@foreach(var p in Model.Products){<tr><td>@p["Article"]</td><td>@p["Name"]</td><td>@p["Quantity"]</td></tr>}</tbody></table>}

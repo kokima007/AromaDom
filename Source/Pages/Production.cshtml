@@ -1,0 +1,45 @@
+@page
+@model AromaDom.Pages.ProductionModel
+@{ ViewData["Title"] = "Расчёт выпуска продукции"; }
+
+<nav aria-label="Навигация"><a asp-page="Index">← Назад к материалам</a></nav>
+<h1>@ViewData["Title"]</h1>
+<p>Укажите количество сырья и параметры изделия. Расчёт учитывает коэффициент типа продукции и потери сырья.</p>
+@if (Model.Result is int result)
+{
+    <div class="notice notice-success" role="status">
+        <strong>Можно изготовить: @result шт.</strong>
+    </div>
+}
+<form method="post">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="notice notice-error" role="alert">
+            <strong>Проверьте данные для расчёта</strong>
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+    <label asp-for="Data.ProductTypeId">Тип продукции</label>
+    <select asp-for="Data.ProductTypeId" required>
+        <option value="">Выберите тип</option>
+        @foreach (var type in Model.ProductTypes)
+        {
+            <option value="@type["Id"]">@type["Name"]</option>
+        }
+    </select>
+    <label asp-for="Data.MaterialTypeId">Тип материала</label>
+    <select asp-for="Data.MaterialTypeId" required>
+        <option value="">Выберите тип</option>
+        @foreach (var type in Model.MaterialTypes)
+        {
+            <option value="@type["Id"]">@type["Name"]</option>
+        }
+    </select>
+    <label asp-for="Data.RawQuantity">Количество сырья</label>
+    <input asp-for="Data.RawQuantity" type="number" min="0" step="1" required />
+    <label asp-for="Data.Parameter1">Первый параметр изделия</label>
+    <input asp-for="Data.Parameter1" type="number" min="0" step="any" required />
+    <label asp-for="Data.Parameter2">Второй параметр изделия</label>
+    <input asp-for="Data.Parameter2" type="number" min="0" step="any" required />
+    <div class="form-actions"><button type="submit">Рассчитать</button></div>
+</form>
